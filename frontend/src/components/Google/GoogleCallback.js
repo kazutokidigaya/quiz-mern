@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
+import Loading from "../Loading";
 
 const GoogleCallback = () => {
   const navigate = useNavigate();
@@ -13,6 +14,10 @@ const GoogleCallback = () => {
 
     if (userId) {
       // Fetch the token using the user ID
+      console.log(
+        `https://quiz-mern-rs1j.onrender.com/api/auth/fetch-token/${userId}`
+      );
+
       axios
         .get(
           `https://quiz-mern-rs1j.onrender.com/api/auth/fetch-token/${userId}`
@@ -41,7 +46,7 @@ const GoogleCallback = () => {
     }
   }, [login, navigate]);
 
-  return <h1>Authenticating with Google...</h1>;
+  return <Loading />;
 };
 
 export default GoogleCallback;

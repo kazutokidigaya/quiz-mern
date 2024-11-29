@@ -86,15 +86,15 @@ const Login = () => {
           <p className="text-gray-500  text-sm">Or login using Google Auth</p>
 
           <button
-            onClick={() => {
-              window.location.href =
-                "https://quiz-mern-rs1j.onrender.com/api/auth/google";
-            }}
+            onClick={() =>
+              (window.location.href =
+                "https://quiz-mern-rs1j.onrender.com/api/auth/google")
+            }
             className="flex w-full items-center justify-center gap-4"
           >
             <img
               src="https://res.cloudinary.com/dqela8lj8/image/upload/v1732783718/db9aiwhjxeitnkzjsyza.png"
-              alt="Google.webp"
+              alt="Google"
               className="w-6 h-6"
             />
           </button>

@@ -19,11 +19,13 @@ const AttemptQuiz = () => {
   const [quizStarted, setQuizStarted] = useState(false);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [loading, setLoading] = useState(false); // Added loading state
 
   const fetchNextQuestion = async (
     selectedOption = null,
     questionId = null
   ) => {
+    setLoading(true); // Start loading
     try {
       const response = await getNextQuestion(
         quizId,
@@ -37,6 +39,7 @@ const AttemptQuiz = () => {
       if (response.message === "All questions have been attempted.") {
         setScore(response.score);
         setCurrentQuestion(null);
+        setLoading(false); // Stop loading
         return;
       }
 
@@ -47,12 +50,13 @@ const AttemptQuiz = () => {
         setQuestionsAttempted((prev) => prev + 1);
         setTotalQuestions(response.totalQuestions);
         setTimeLeft(response.question.timeLimit || 30);
-
         setSelectedOption(null);
       }
     } catch (error) {
       console.error("Failed to fetch next question:", error);
       toast.error("Unable to load the next question. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -78,12 +82,12 @@ const AttemptQuiz = () => {
   };
 
   const handleSubmitQuiz = async () => {
+    setLoading(true); // Start loading for quiz submission
     try {
       const response = await submitQuiz(quizId, answers, authToken);
       toast.success(
         `Quiz submitted successfully! Your score: ${response.score}`
       );
-      console.log(response);
       navigate("/quiz/result", {
         state: {
           score: response.score,
@@ -95,6 +99,8 @@ const AttemptQuiz = () => {
     } catch (error) {
       console.error("Failed to submit quiz:", error);
       toast.error("Failed to submit quiz. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -114,6 +120,14 @@ const AttemptQuiz = () => {
 
     return () => clearInterval(timer);
   }, [currentQuestion]);
+
+  if (loading) {
+    return (
+      <div className="p-6 min-h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
 
   if (!quizStarted) {
     return (
@@ -159,24 +173,8 @@ const AttemptQuiz = () => {
     );
   }
 
-  if (!currentQuestion) {
-    return (
-      <div className="p-6">
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="flex items-center bg-white text-black shadow-lg py-2 px-4 rounded hover:text-white hover:bg-black transition duration-300"
-        >
-          <CgChevronLeftO className="text-2xl mr-2" />
-        </button>
-        <div className="min-h-screen flex w-full items-center justify-center">
-          <Loading />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen  bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-xl font-bold text-blue-600">
@@ -210,7 +208,7 @@ const AttemptQuiz = () => {
         <div className="flex justify-end mt-6">
           <button
             onClick={handleSkip}
-            className="bg-black text-white shadow-lg py-2 px-4 rounded hover:text-black hover:bg-white hover:border hover:border-black  md:m-8 my-6 ml-1"
+            className="bg-black text-white shadow-lg py-2 px-4 rounded hover:text-black hover:bg-white hover:border hover:border-black md:m-8 my-6 ml-1"
           >
             Skip
           </button>
