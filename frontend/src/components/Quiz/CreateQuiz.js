@@ -47,10 +47,6 @@ const CreateQuiz = () => {
       const updatedQuestions = [...prev.questions];
       if (!updatedQuestions[index].tags.includes(tag)) {
         updatedQuestions[index].tags.push(tag);
-        console.log(
-          `Tag "${tag}" added to question ${index}:`,
-          updatedQuestions[index].tags
-        );
       } else {
         console.log(`Tag "${tag}" already exists for question ${index}.`);
       }
@@ -67,8 +63,6 @@ const CreateQuiz = () => {
   };
 
   const handleCreateQuiz = async () => {
-    console.log("Quiz Data:", quizData); // Debug log
-
     try {
       await createQuiz(quizData, authToken);
       toast.success("Quiz created successfully!");

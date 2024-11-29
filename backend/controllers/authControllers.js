@@ -10,8 +10,6 @@ const otpStore = {};
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("Login attempt:", { email, password });
-
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -90,7 +88,6 @@ const sendVerificationOTP = async (req, res) => {
 
   try {
     let user = await User.findOne({ email });
-    console.log("Database User:", user); // Debug user creation
 
     if (user && user.isVerified) {
       return res
@@ -125,7 +122,6 @@ const sendVerificationOTP = async (req, res) => {
 
 const verifyOTPAndSignup = async (req, res) => {
   const { name, email, password, otp } = req.body;
-  console.log("Payload received:", { name, email, password, otp });
 
   try {
     const storedOtp = otpStore[email];
