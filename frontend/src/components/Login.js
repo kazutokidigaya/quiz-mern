@@ -94,7 +94,7 @@ const Login = () => {
             <img
               src="https://res.cloudinary.com/dqela8lj8/image/upload/v1732783718/db9aiwhjxeitnkzjsyza.png"
               alt="Google.webp"
-              className="w-8 h-8"
+              className="w-6 h-6"
             />
           </button>
         </div>
