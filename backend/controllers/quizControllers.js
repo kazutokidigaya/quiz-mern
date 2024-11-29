@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import redis from "../config/redisclient.js";
+import redis from "../config/redisClient.js";
 import Quiz from "../models/Quiz.js";
 import QuizAttempt from "../models/QuizAttempt.js";
 import jwt from "jsonwebtoken";
