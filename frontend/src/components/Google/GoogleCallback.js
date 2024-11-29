@@ -14,7 +14,9 @@ const GoogleCallback = () => {
     if (userId) {
       // Fetch the token using the user ID
       axios
-        .get(`http://localhost:5000/api/auth/fetch-token/${userId}`)
+        .get(
+          `https://quiz-mern-rs1j.onrender.com/api/auth/fetch-token/${userId}`
+        )
         .then((res) => {
           const token = res.data.token;
 

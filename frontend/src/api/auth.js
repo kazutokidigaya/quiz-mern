@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "https://quiz-mern-rs1j.onrender.com/api/auth",
 });
 
 export default API;

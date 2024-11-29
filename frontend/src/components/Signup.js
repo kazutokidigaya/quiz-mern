@@ -173,7 +173,8 @@ const Signup = () => {
           {/* Google Signup */}
           <button
             onClick={() =>
-              (window.location.href = "http://localhost:5000/api/auth/google")
+              (window.location.href =
+                "https://quiz-mern-rs1j.onrender.com/api/auth/google")
             }
             className="flex w-full items-center justify-center gap-4"
           >
