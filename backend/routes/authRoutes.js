@@ -11,7 +11,7 @@ import {
 } from "../controllers/authControllers.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import jwt from "jsonwebtoken";
-import redis from "../config/redisclient.js";
+import redis from "../config/redisClient.js";
 
 const router = express.Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";

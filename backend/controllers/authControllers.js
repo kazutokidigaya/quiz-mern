@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import redis from "../config/redisclient.js";
+import redis from "../config/redisClient.js";
 import cloudinary from "../config/cloudinary.js";
 
 const otpStore = {};

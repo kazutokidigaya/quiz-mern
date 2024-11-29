@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import redis from "../config/redisclient.js";
+import redis from "../config/redisClient.js";
 
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.header("Authorization");
