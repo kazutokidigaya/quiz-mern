@@ -15,7 +15,6 @@ import redis from "../config/redisClient.js";
 
 const router = express.Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
 
 // google
 router.get(
@@ -38,7 +37,9 @@ router.get(
       await redis.set(req.user._id.toString(), token, "EX", 7200);
 
       // Redirect to the frontend with the user ID
-      res.redirect(`${FRONTEND_URL}/google/callback?userId=${req.user._id}`);
+      res.redirect(
+        `https://quiz-mern-snowy.vercel.app/google/callback?userId=${req.user._id}`
+      );
     } catch (error) {
       console.error("Error during Google OAuth callback:", error);
       res.status(500).json({ message: "Failed to authenticate user." });
