@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import redis from "../config/redisClient.js";
 
 const router = express.Router();
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL = "https://quiz-mern-snowy.vercel.app";
 
 // google
 router.get(
