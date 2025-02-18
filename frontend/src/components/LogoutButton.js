@@ -11,7 +11,7 @@ const LogoutButton = () => {
     try {
       if (authToken) {
         // Send the logout request with the proper Authorization header format
-        await axios.get("https://quiz-mern-rs1j.onrender.com/api/auth/logout", {
+        await axios.get("https://quiz-mern-dr93.vercel.app/api/auth/logout", {
           headers: { Authorization: `Bearer ${authToken}` }, // Add "Bearer" prefix
         });
       }

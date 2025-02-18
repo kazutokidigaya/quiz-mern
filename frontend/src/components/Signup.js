@@ -174,7 +174,7 @@ const Signup = () => {
           <button
             onClick={() =>
               (window.location.href =
-                "https://quiz-mern-rs1j.onrender.com/api/auth/google")
+                "https://quiz-mern-dr93.vercel.app/api/auth/google")
             }
             className="flex w-full items-center justify-center gap-4"
           >

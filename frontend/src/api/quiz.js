@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://quiz-mern-rs1j.onrender.com/api",
+  baseURL: "https://quiz-mern-dr93.vercel.app/api",
 });
 
 export const createQuiz = async (quizData, authToken) => {
