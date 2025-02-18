@@ -20,8 +20,6 @@ const AttemptQuiz = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [loading, setLoading] = useState(false); // Added loading state
-  const [feedback, setFeedback] = useState(null);
-  const [isShowingFeedback, setIsShowingFeedback] = useState(false);
 
   const fetchNextQuestion = async (
     selectedOption = null,
@@ -67,63 +65,16 @@ const AttemptQuiz = () => {
     fetchNextQuestion();
   };
 
-  const handleAnswer = async (optionIndex) => {
-    // Prevent multiple clicks if feedback is currently displayed
-    if (isShowingFeedback) return;
-
+  const handleAnswer = (optionIndex) => {
+    setAnswers((prevAnswers) => [
+      ...prevAnswers,
+      {
+        questionId: currentQuestion.questionId,
+        selectedOption: optionIndex,
+      },
+    ]);
     setSelectedOption(optionIndex);
-    setLoading(true);
-
-    const oldScore = score; // Keep track of what the score was before this question
-
-    try {
-      // 1) Call backend to see if we got it right and get the next question
-      const response = await getNextQuestion(
-        quizId,
-        oldScore,
-        authToken,
-        usedQuestions,
-        optionIndex,
-        currentQuestion.questionId
-      );
-      setLoading(false);
-
-      // If no more questions:
-      if (response.message === "All questions have been attempted.") {
-        setScore(response.score);
-        setCurrentQuestion(null);
-        return;
-      }
-
-      // 2) Check if correct or wrong
-      const isCorrect = response.score > oldScore;
-      setFeedback(isCorrect ? "correct" : "wrong");
-      setIsShowingFeedback(true);
-
-      // Temporarily hold the new question data (don’t set it yet)
-      const newQuestion = response.question;
-      const newScore = response.score;
-
-      // 3) Show feedback for 1 second
-      setTimeout(() => {
-        // Clear the feedback
-        setFeedback(null);
-        setIsShowingFeedback(false);
-
-        // 4) Update everything for the *next* question
-        setScore(newScore);
-        setUsedQuestions([...usedQuestions, newQuestion.questionId]);
-        setQuestionsAttempted((prev) => prev + 1);
-        setTotalQuestions(response.totalQuestions);
-        setTimeLeft(newQuestion.timeLimit || 30);
-        setSelectedOption(null);
-        setCurrentQuestion(newQuestion);
-      }, 1000);
-    } catch (error) {
-      setLoading(false);
-      console.error("Failed to fetch next question:", error);
-      toast.error("Unable to load the next question. Please try again.");
-    }
+    fetchNextQuestion(optionIndex, currentQuestion.questionId);
   };
 
   const handleSkip = () => {
@@ -238,18 +189,6 @@ const AttemptQuiz = () => {
             <span className="font-semibold text-lg">{timeLeft}s</span>
           </div>
         </div>
-
-        {/* Feedback Message */}
-        {feedback && (
-          <div
-            className={`mb-4 text-2xl font-bold ${
-              feedback === "correct" ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {feedback === "correct" ? "Correct!" : "Wrong!"}
-          </div>
-        )}
-
         <h2 className="text-lg font-semibold mb-4 text-gray-800">
           {currentQuestion.questionText}
         </h2>
@@ -257,16 +196,9 @@ const AttemptQuiz = () => {
           {currentQuestion.options.map((option, index) => (
             <li
               key={index}
-              className={`
-                border py-2 px-4 rounded-md cursor-pointer 
-                ${
-                  selectedOption === index && feedback === "correct"
-                    ? "bg-green-200"
-                    : selectedOption === index && feedback === "wrong"
-                    ? "bg-red-200"
-                    : "hover:bg-gray-400"
-                }
-              `}
+              className={`border py-2 px-4 rounded-md cursor-pointer ${
+                selectedOption === index ? "bg-green-200" : "hover:bg-gray-400"
+              }`}
               onClick={() => handleAnswer(index)}
             >
               {option}
