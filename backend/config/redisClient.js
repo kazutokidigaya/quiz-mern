@@ -3,7 +3,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const redis = new Redis(process.env.UPSTASH_REDIS_URL);
+const redis = new Redis(process.env.UPSTASH_REDIS_URL, {
+  maxRetriesPerRequest: null,
+  enableReadyCheck: false,
+  keepAlive: 30000,
+  retryStrategy: (times) => {
+    const delay = Math.min(times * 50, 2000);
+    return delay;
+  },
+});
 
 redis.on("connect", () => {
   console.log("Connected to Upstash Redis successfully!");
