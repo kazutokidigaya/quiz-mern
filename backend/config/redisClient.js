@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const redis = new Redis(process.env.UPSTASH_REDIS_URL, {
-  maxRetriesPerRequest: null,
-  enableReadyCheck: false,
-  keepAlive: 30000,
+  enableReadyCheck: false, 
+  maxRetriesPerRequest: null, 
+  connectTimeout: 5000, 
+  
   retryStrategy: (times) => {
-    const delay = Math.min(times * 50, 2000);
+    const delay = Math.min(times * 50, 2000); 
     return delay;
   },
 });
