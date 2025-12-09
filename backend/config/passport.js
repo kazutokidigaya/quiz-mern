@@ -27,37 +27,41 @@ passport.use(
             }
 
             if (!user.profileUpdated) {
+              
               const googleImage = profile.photos[0]?.value;
+              user.profileImage = googleImage || "/default-placeholder.png"; 
+              user.name = profile.displayName;
 
               // Upload Google profile image to Cloudinary
-              try {
-                const result = await cloudinary.uploader.upload(googleImage, {
-                  folder: "google-profile-images",
-                  public_id: `google_${profile.id}`,
-                });
-                user.profileImage = result.secure_url;
-              } catch (cloudinaryError) {
-                console.error("Cloudinary Upload Error:", cloudinaryError);
-              }
+            //   try {
+            //     const result = await cloudinary.uploader.upload(googleImage, {
+            //       folder: "google-profile-images",
+            //       public_id: `google_${profile.id}`,
+            //     });
+            //     user.profileImage = result.secure_url;
+            //   } catch (cloudinaryError) {
+            //     console.error("Cloudinary Upload Error:", cloudinaryError);
+            //   }
 
-              user.name = profile.displayName;
-            }
+            //   user.name = profile.displayName;
+            // }
 
             await user.save();
           } else {
             const googleImage = profile.photos[0]?.value;
+            const profileImageUrl = googleImage || "/default-placeholder.png";
 
-            let uploadedImage;
-            try {
-              const result = await cloudinary.uploader.upload(googleImage, {
-                folder: "google-profile-images",
-                public_id: `google_${profile.id}`,
-              });
-              uploadedImage = result.secure_url;
-            } catch (cloudinaryError) {
-              console.error("Cloudinary Upload Error:", cloudinaryError);
-              uploadedImage = "/default-placeholder.png"; // Fallback in case of an error
-            }
+            // let uploadedImage;
+            // try {
+            //   const result = await cloudinary.uploader.upload(googleImage, {
+            //     folder: "google-profile-images",
+            //     public_id: `google_${profile.id}`,
+            //   });
+            //   uploadedImage = result.secure_url;
+            // } catch (cloudinaryError) {
+            //   console.error("Cloudinary Upload Error:", cloudinaryError);
+            //   uploadedImage = "/default-placeholder.png"; // Fallback in case of an error
+            // }
 
             user = await User.create({
               name: profile.displayName,
@@ -65,7 +69,7 @@ passport.use(
               googleID: profile.id,
               isGoogleUser: true,
               isVerified: true,
-              profileImage: uploadedImage,
+              profileImage: profileImageUrl, 
             });
           }
         }
